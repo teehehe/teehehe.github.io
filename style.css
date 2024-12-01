@@ -26,6 +26,7 @@ header {
     border-right: 1px solid #444;
     padding: 20px;
     overflow-y: auto;
+    transition: width 0.3s ease;
 }
 
 #sidebar input {
@@ -38,20 +39,26 @@ header {
     border-radius: 4px;
 }
 
-#realmList, #skillList {
+#realmList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#realmList li, #skillList li {
+#realmList li {
     padding: 8px;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-#realmList li:hover, #skillList li:hover {
+#realmList li:hover {
     background-color: #444;
     color: #ffd700;
+}
+
+#realmList .collapsed ul {
+    display: none;
 }
 
 #content {
