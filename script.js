@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const skillContent = document.createElement('section');
         skillContent.innerHTML = `<h1 class="realm-${realmName.toLowerCase()}">${realmName} - ${skillName}</h1>`; // Color based on realm
 
-        const items = skill.querySelectorAll('Item');
+        const items = skill.querySelectorAll('Item');  // Correctly access Items
         items.forEach(item => {
             const itemName = item.getAttribute('name');
             const patterns = item.querySelectorAll('Pattern');
