@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul style="display:none;">
                 ${Array.from(pattern.querySelectorAll('Ingredient')).map(ingredient => {
                     const ingredientName = ingredient.getAttribute('name');
-                    const ingredientCategory = ingredient.getAttribute('cat') || 'Unknown';  // Use 'cat' for category
+                    const ingredientCategory = ingredient.getAttribute('cat') || 'No Category';  // Default to 'No Category' if 'cat' is missing
                     return `<li>${ingredientName} (${ingredientCategory}) - ${ingredient.getAttribute('quantity')}</li>`;
                 }).join('')}
             </ul>
