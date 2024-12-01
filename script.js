@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         realmHeader.textContent = realmName;
         realmHeader.style.color = '#ffd700';
         realmHeader.style.textAlign = 'center';
+        realmHeader.style.cursor = 'pointer';
+        realmHeader.addEventListener('click', () => toggleRealmSkills(realmSection));
         realmSection.appendChild(realmHeader);
 
         const skills = realm.querySelectorAll('Skill');
@@ -34,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const skillName = skill.getAttribute('name');
             if (!excludedSkills.includes(skillName)) {
                 createNavLink(skillName, realmName); // Add to navigation
-                createSkillSection(skill, skillName, realmSection); // Add to realm section
+                const skillSection = createSkillSection(skill, skillName, realmSection); // Add to realm section
+                skillSection.style.display = 'none'; // Start hidden
             }
         });
 
@@ -49,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navContainer.appendChild(link);
     }
 
-    // Create skill section with collapsible feature
+    // Create skill section
     function createSkillSection(skill, skillName, realmSection) {
         const section = document.createElement('section');
         section.id = `${realmSection.id}-${skillName}`;
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const header = document.createElement('h2');
         header.textContent = skillName;
         header.style.cursor = 'pointer';
-        header.addEventListener('click', () => toggleSection(section));
+        header.addEventListener('click', () => toggleSkillRecipes(section));
         section.appendChild(header);
 
         const items = skill.querySelectorAll('Item');
@@ -66,11 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const patterns = item.querySelectorAll('Pattern');
             patterns.forEach(pattern => {
                 const recipeDiv = createRecipeDiv(itemName, pattern);
+                recipeDiv.style.display = 'none'; // Start hidden
                 section.appendChild(recipeDiv);
             });
         });
 
         realmSection.appendChild(section);
+        return section;
     }
 
     // Create individual recipe card
@@ -91,10 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return recipeDiv;
     }
 
-    // Toggle section visibility
-    function toggleSection(section) {
-        const recipes = section.querySelectorAll('.recipe');
-        recipes.forEach(recipe => recipe.style.display = recipe.style.display === 'none' ? 'block' : 'none');
+    // Toggle visibility of skills under a realm
+    function toggleRealmSkills(realmSection) {
+        const skills = realmSection.querySelectorAll('section');
+        skills.forEach(skill => {
+            skill.style.display = skill.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+
+    // Toggle visibility of recipes under a skill
+    function toggleSkillRecipes(skillSection) {
+        const recipes = skillSection.querySelectorAll('.recipe');
+        recipes.forEach(recipe => {
+            recipe.style.display = recipe.style.display === 'none' ? 'block' : 'none';
+        });
     }
 
     // Search and Filter functionality
