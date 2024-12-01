@@ -68,32 +68,55 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const itemName = item.getAttribute('name');
             const patterns = item.querySelectorAll('Pattern');
-            patterns.forEach(pattern => {
-                const recipeDiv = createRecipeDiv(itemName, pattern);
-                skillContent.appendChild(recipeDiv);
-            });
+            const itemDiv = createItemDiv(itemName, patterns);
+            skillContent.appendChild(itemDiv);
         });
 
         contentContainer.innerHTML = ''; // Clear existing content
         contentContainer.appendChild(skillContent);
     }
 
-    // Create an individual recipe card
-    function createRecipeDiv(itemName, pattern) {
-        const patternName = pattern.getAttribute('name');
-        const skill = pattern.getAttribute('skill');
-        const ingredients = pattern.querySelectorAll('Ingredient');
+    // Create an individual item card
+    function createItemDiv(itemName, patterns) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'recipe';
+        itemDiv.innerHTML = `<h2 class="collapsible">${itemName}</h2><div class="pattern-list">`;
 
-        const recipeDiv = document.createElement('div');
-        recipeDiv.className = 'recipe';
-        recipeDiv.innerHTML = `
-            <h3>${itemName}: ${patternName}</h3>
-            <p>Skill: ${skill}</p>
+        patterns.forEach(pattern => {
+            const patternName = pattern.getAttribute('name');
+            const patternDiv = createPatternDiv(patternName, pattern);
+            itemDiv.appendChild(patternDiv);
+        });
+
+        itemDiv.querySelector('h2').addEventListener('click', () => {
+            const patternList = itemDiv.querySelector('.pattern-list');
+            const isCollapsed = patternList.style.display === 'none';
+            patternList.style.display = isCollapsed ? 'block' : 'none';
+        });
+
+        return itemDiv;
+    }
+
+    // Create a pattern card for an item
+    function createPatternDiv(patternName, pattern) {
+        const patternDiv = document.createElement('div');
+        patternDiv.className = 'pattern';
+        patternDiv.innerHTML = `
+            <h3 class="collapsible">${patternName}</h3>
             <ul>
-                ${Array.from(ingredients).map(ing => `<li>${ing.getAttribute('quantity')}x ${ing.getAttribute('name')}</li>`).join('')}
+                ${Array.from(pattern.querySelectorAll('Ingredient')).map(ingredient => `
+                    <li>${ingredient.getAttribute('quantity')}x ${ingredient.getAttribute('name')}</li>
+                `).join('')}
             </ul>
         `;
-        return recipeDiv;
+
+        patternDiv.querySelector('h3').addEventListener('click', () => {
+            const ingredientList = patternDiv.querySelector('ul');
+            const isCollapsed = ingredientList.style.display === 'none';
+            ingredientList.style.display = isCollapsed ? 'block' : 'none';
+        });
+
+        return patternDiv;
     }
 
     // Filter the sidebar list based on search input
