@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const xmlFile = 'atlas_crafting_recipes.xml';
     const contentContainer = document.getElementById('content');
-    const sidebarList = document.getElementById('skillList');
+    const realmList = document.getElementById('realmList');
+    const skillList = document.getElementById('skillList');
     const searchBox = document.getElementById('searchBox');
     const excludedSkills = ['Siegecraft', 'Jewelcraft', 'Gemcutting', 'Herbcraft', 'Herbcrafting'];
+
+    let selectedRealm = null;
 
     // Fetch and parse the XML file
     fetch(xmlFile)
@@ -25,8 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
         realmItem.textContent = realmName;
         realmItem.style.fontSize = '18px';
         realmItem.style.fontWeight = 'bold';
-        realmItem.addEventListener('click', () => showRealmSkills(realmName, realm));
-        sidebarList.appendChild(realmItem);
+        realmItem.addEventListener('click', () => showSkillsInSidebar(realmName, realm));
+        realmList.appendChild(realmItem);
+    }
+
+    // Show skills for the selected realm
+    function showSkillsInSidebar(realmName, realm) {
+        selectedRealm = realm;
+        skillList.style.display = 'block'; // Show the skills list
+        skillList.innerHTML = ''; // Clear previous skills list
 
         const skills = realm.querySelectorAll('Skill');
         skills.forEach(skill => {
@@ -39,32 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     event.stopPropagation();
                     showSkillRecipes(realmName, skillName, skill);
                 });
-                sidebarList.appendChild(skillItem);
+                skillList.appendChild(skillItem);
             }
         });
     }
 
-    // Show all skills for a selected realm
-    function showRealmSkills(realmName, realm) {
-        const realmContent = document.createElement('section');
-        realmContent.innerHTML = `<h1>${realmName}</h1>`;
-
-        const skills = realm.querySelectorAll('Skill');
-        skills.forEach(skill => {
-            const skillName = skill.getAttribute('name');
-            const skillSection = createSkillSection(skillName, skill);
-            realmContent.appendChild(skillSection);
-        });
-
-        contentContainer.innerHTML = ''; // Clear existing content
-        contentContainer.appendChild(realmContent);
-    }
-
-    // Create a skill section (collapsed by default)
-    function createSkillSection(skillName, skill) {
-        const section = document.createElement('section');
-        section.innerHTML = `<h2>${skillName}</h2>`;
-        section.style.display = 'none'; // Start hidden
+    // Show recipes for the selected skill
+    function showSkillRecipes(realmName, skillName, skill) {
+        const skillContent = document.createElement('section');
+        skillContent.innerHTML = `<h1>${realmName} - ${skillName}</h1>`;
 
         const items = skill.querySelectorAll('Item');
         items.forEach(item => {
@@ -72,13 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const patterns = item.querySelectorAll('Pattern');
             patterns.forEach(pattern => {
                 const recipeDiv = createRecipeDiv(itemName, pattern);
-                recipeDiv.style.display = 'none'; // Start hidden
-                section.appendChild(recipeDiv);
+                skillContent.appendChild(recipeDiv);
             });
         });
 
-        section.addEventListener('click', () => toggleSkillRecipes(section));
-        return section;
+        contentContainer.innerHTML = ''; // Clear existing content
+        contentContainer.appendChild(skillContent);
     }
 
     // Create an individual recipe card
@@ -99,19 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return recipeDiv;
     }
 
-    // Toggle recipes visibility under a skill
-    function toggleSkillRecipes(skillSection) {
-        const recipes = skillSection.querySelectorAll('.recipe');
-        recipes.forEach(recipe => {
-            recipe.style.display = recipe.style.display === 'none' ? 'block' : 'none';
-        });
-    }
-
     // Filter the sidebar list based on search input
     function filterList() {
         const searchTerm = searchBox.value.toLowerCase();
-        const items = sidebarList.getElementsByTagName('li');
-        Array.from(items).forEach(item => {
+        const realmItems = realmList.getElementsByTagName('li');
+        const skillItems = skillList.getElementsByTagName('li');
+        
+        // Filter realms
+        Array.from(realmItems).forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(searchTerm) ? 'block' : 'none';
+        });
+
+        // Filter skills
+        Array.from(skillItems).forEach(item => {
             const text = item.textContent.toLowerCase();
             item.style.display = text.includes(searchTerm) ? 'block' : 'none';
         });
