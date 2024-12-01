@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const xmlFile = 'atlas_crafting_recipes.xml';
     const contentContainer = document.getElementById('content');
     const realmList = document.getElementById('realmList');
-    const searchBox = document.getElementById('searchBox');
     const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcrafting'];
 
     let realmsData = [];
@@ -130,70 +129,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return patternDiv;
     }
-
-    // Handle search input
-    searchBox.addEventListener('input', () => {
-        const searchTerm = searchBox.value.toLowerCase();
-        contentContainer.innerHTML = ''; // Clear existing content
-
-        let matchedResults = [];
-
-        // Loop through realms and search
-        realmsData.forEach(({ realmName, realm }) => {
-            const matchedSkills = [];
-            const skills = realm.querySelectorAll('Skill');
-            skills.forEach(skill => {
-                const skillName = skill.getAttribute('name').toLowerCase();
-                if (skillName.includes(searchTerm)) {
-                    matchedSkills.push(skill);
-                }
-
-                // Search through items and patterns for matching results
-                const items = skill.querySelectorAll('Item');
-                items.forEach(item => {
-                    const itemName = item.getAttribute('name').toLowerCase();
-                    if (itemName.includes(searchTerm)) {
-                        matchedSkills.push({ skillName, item, itemName });
-                    }
-
-                    const patterns = item.querySelectorAll('Pattern');
-                    patterns.forEach(pattern => {
-                        const patternName = pattern.getAttribute('name').toLowerCase();
-                        if (patternName.includes(searchTerm)) {
-                            matchedSkills.push({ skillName, itemName, pattern, patternName });
-                        }
-                    });
-                });
-            });
-
-            if (matchedSkills.length > 0 || realmName.toLowerCase().includes(searchTerm)) {
-                matchedResults.push({ realmName, skills: matchedSkills, realm });
-            }
-        });
-
-        // Display the matched results in the center
-        matchedResults.forEach(({ realmName, skills }) => {
-            const realmContent = document.createElement('section');
-            realmContent.innerHTML = `<h1 class="realm-${realmName.toLowerCase()}">${realmName}</h1>`;
-            skills.forEach(skill => {
-                const skillName = skill.skillName || skill.getAttribute('name');
-                const skillDiv = document.createElement('div');
-                skillDiv.innerHTML = `<h2 class="collapsible">${skillName}</h2>`;
-                const items = skill.querySelectorAll('Item');
-                items.forEach(item => {
-                    const itemName = item.getAttribute('name');
-                    const patterns = item.querySelectorAll('Pattern');
-                    const itemDiv = createItemDiv(itemName, patterns, realmName);
-                    skillDiv.appendChild(itemDiv);
-                });
-                realmContent.appendChild(skillDiv);
-            });
-            contentContainer.appendChild(realmContent);
-        });
-
-        // If no results are found, show a "No results" message
-        if (matchedResults.length === 0 && searchTerm !== '') {
-            contentContainer.innerHTML = '<p>No results found</p>';
-        }
-    });
 });
