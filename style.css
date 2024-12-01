@@ -38,18 +38,18 @@ header {
     border-radius: 4px;
 }
 
-#skillList {
+#realmList, #skillList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#skillList li {
+#realmList li, #skillList li {
     padding: 8px;
     cursor: pointer;
 }
 
-#skillList li:hover {
+#realmList li:hover, #skillList li:hover {
     background-color: #444;
     color: #ffd700;
 }
