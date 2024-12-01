@@ -10,7 +10,17 @@
     <header>
         Crafting Recipes
     </header>
-    <main id="content"></main>
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <input type="text" id="searchBox" placeholder="Search for a realm or skill..." onkeyup="filterList()">
+            <ul id="skillList"></ul>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content"></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
