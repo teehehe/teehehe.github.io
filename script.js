@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createRealmInSidebar(realmName, realm) {
         const realmItem = document.createElement('li');
         realmItem.textContent = realmName;
-        realmItem.classList.add(realmName.toLowerCase()); // Add class based on realm name
+        realmItem.classList.add(realmName.toLowerCase()); // Add class based on realm name for color
         realmItem.addEventListener('click', () => toggleRealmCollapse(realmItem, realm)); // Toggle collapse
         realmList.appendChild(realmItem);
 
