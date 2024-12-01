@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const xmlFile = 'atlas_crafting_recipes.xml';
     const contentContainer = document.getElementById('content');
-    const navContainer = document.querySelector('nav');
     const excludedSkills = ['Siegecraft', 'Jewelcraft', 'Gemcutting', 'Herbcraft', 'Herbcrafting'];
 
     // Fetch and parse the XML file
@@ -35,21 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
         skills.forEach(skill => {
             const skillName = skill.getAttribute('name');
             if (!excludedSkills.map(s => s.toLowerCase()).includes(skillName.toLowerCase())) {
-                createNavLink(skillName, realmName); // Add to navigation
                 const skillSection = createSkillSection(skill, skillName, realmSection); // Add to realm section
                 skillSection.style.display = 'none'; // Start hidden
             }
         });
 
         contentContainer.appendChild(realmSection);
-    }
-
-    // Create navigation links dynamically
-    function createNavLink(skillName, realmName) {
-        const link = document.createElement('a');
-        link.href = `#${realmName}-${skillName}`;
-        link.textContent = `${realmName}: ${skillName}`;
-        navContainer.appendChild(link);
     }
 
     // Create skill section
