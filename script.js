@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('content');
     const realmList = document.getElementById('realmList');
     const searchBox = document.getElementById('searchBox');
-    const excludedSkills = ['Siegecraft', 'Jewelcraft', 'Gemcutting', 'Herbcraft', 'Herbcrafting'];
+    const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcrafting'];
 
     let selectedRealm = null;
 
@@ -31,13 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const skillsList = document.createElement('ul');
         const skills = realm.querySelectorAll('Skill');
         skills.forEach(skill => {
-            const skillName = skill.getAttribute('name');
-            if (!excludedSkills.includes(skillName.toLowerCase())) {
+            const skillName = skill.getAttribute('name').toLowerCase();
+            if (!excludedSkills.includes(skillName)) { // Exclude specific skills
                 const skillItem = document.createElement('li');
-                skillItem.textContent = skillName;
+                skillItem.textContent = skill.getAttribute('name');
                 skillItem.addEventListener('click', (event) => {
                     event.stopPropagation(); // Prevent realm collapse toggle
-                    showSkillRecipes(realmName, skillName, skill);
+                    showSkillRecipes(realmName, skill.getAttribute('name'), skill);
                 });
                 skillsList.appendChild(skillItem);
             }
