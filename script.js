@@ -2,31 +2,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const xmlFile = 'atlas_crafting_recipes.xml';
     const contentContainer = document.getElementById('content');
     const navContainer = document.querySelector('nav');
+    const excludedSkills = ['Siegecraft', 'Jewelcraft', 'Gemcutting', 'Herbcrafting'];
 
+    // Fetch and parse the XML file
     fetch(xmlFile)
         .then(response => response.text())
         .then(data => {
             const parser = new DOMParser();
             const xml = parser.parseFromString(data, 'application/xml');
-            const skills = xml.querySelectorAll('Skill');
+            const realms = xml.querySelectorAll('Realm');
 
-            skills.forEach(skill => {
-                const skillName = skill.getAttribute('name');
-                createNavLink(skillName);
-                createSkillSection(skill, skillName);
+            realms.forEach(realm => {
+                const realmName = realm.getAttribute('name');
+                createRealmSection(realmName, realm); // Create section for each realm
             });
         });
 
-    function createNavLink(skillName) {
+    // Create a section for each realm
+    function createRealmSection(realmName, realm) {
+        const realmSection = document.createElement('section');
+        realmSection.id = realmName;
+
+        const realmHeader = document.createElement('h1');
+        realmHeader.textContent = realmName;
+        realmHeader.style.color = '#ffd700';
+        realmHeader.style.textAlign = 'center';
+        realmSection.appendChild(realmHeader);
+
+        const skills = realm.querySelectorAll('Skill');
+        skills.forEach(skill => {
+            const skillName = skill.getAttribute('name');
+            if (!excludedSkills.includes(skillName)) {
+                createNavLink(skillName, realmName); // Add to navigation
+                createSkillSection(skill, skillName, realmSection); // Add to realm section
+            }
+        });
+
+        contentContainer.appendChild(realmSection);
+    }
+
+    // Create navigation links dynamically
+    function createNavLink(skillName, realmName) {
         const link = document.createElement('a');
-        link.href = `#${skillName}`;
-        link.textContent = skillName;
+        link.href = `#${realmName}-${skillName}`;
+        link.textContent = `${realmName}: ${skillName}`;
         navContainer.appendChild(link);
     }
 
-    function createSkillSection(skill, skillName) {
+    // Create skill section with collapsible feature
+    function createSkillSection(skill, skillName, realmSection) {
         const section = document.createElement('section');
-        section.id = skillName;
+        section.id = `${realmSection.id}-${skillName}`;
 
         const header = document.createElement('h2');
         header.textContent = skillName;
@@ -44,9 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        contentContainer.appendChild(section);
+        realmSection.appendChild(section);
     }
 
+    // Create individual recipe card
     function createRecipeDiv(itemName, pattern) {
         const patternName = pattern.getAttribute('name');
         const skill = pattern.getAttribute('skill');
@@ -64,11 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return recipeDiv;
     }
 
+    // Toggle section visibility
     function toggleSection(section) {
         const recipes = section.querySelectorAll('.recipe');
         recipes.forEach(recipe => recipe.style.display = recipe.style.display === 'none' ? 'block' : 'none');
     }
 
+    // Search and Filter functionality
     const searchBar = document.createElement('input');
     searchBar.type = 'text';
     searchBar.placeholder = 'Search for recipes...';
