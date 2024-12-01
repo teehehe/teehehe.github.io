@@ -37,7 +37,7 @@ header {
 }
 
 #sidebar input {
-    width: 100%;
+    width: 90%;  /* Adjusted width to prevent cutting off */
     padding: 10px;
     margin-bottom: 20px;
     background-color: #444;
@@ -45,6 +45,7 @@ header {
     border: 1px solid #555;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box; /* Ensures padding and border are included in width */
 }
 
 #realmList, #skillList {
