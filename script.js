@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('content');
     const realmList = document.getElementById('realmList');
     const searchBox = document.getElementById('searchBox');
-    const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcrafting'];
+    const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcraft'];
 
     let selectedRealm = null;
 
