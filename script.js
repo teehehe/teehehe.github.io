@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('content');
     const realmList = document.getElementById('realmList');
     const searchBox = document.getElementById('searchBox');
-    const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcraft'];
+    const excludedSkills = ['siegecraft', 'jewelcraft', 'gemcutting', 'herbcrafting'];
 
     let realmsData = [];
 
@@ -147,6 +147,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (skillName.includes(searchTerm)) {
                     matchedSkills.push(skill);
                 }
+
+                // Search through items and patterns for matching results
+                const items = skill.querySelectorAll('Item');
+                items.forEach(item => {
+                    const itemName = item.getAttribute('name').toLowerCase();
+                    if (itemName.includes(searchTerm)) {
+                        matchedSkills.push({ skillName, item, itemName });
+                    }
+
+                    const patterns = item.querySelectorAll('Pattern');
+                    patterns.forEach(pattern => {
+                        const patternName = pattern.getAttribute('name').toLowerCase();
+                        if (patternName.includes(searchTerm)) {
+                            matchedSkills.push({ skillName, itemName, pattern, patternName });
+                        }
+                    });
+                });
             });
 
             if (matchedSkills.length > 0 || realmName.toLowerCase().includes(searchTerm)) {
@@ -159,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const realmContent = document.createElement('section');
             realmContent.innerHTML = `<h1 class="realm-${realmName.toLowerCase()}">${realmName}</h1>`;
             skills.forEach(skill => {
-                const skillName = skill.getAttribute('name');
+                const skillName = skill.skillName || skill.getAttribute('name');
                 const skillDiv = document.createElement('div');
                 skillDiv.innerHTML = `<h2 class="collapsible">${skillName}</h2>`;
                 const items = skill.querySelectorAll('Item');
