@@ -118,6 +118,31 @@ section h2:hover {
     background-color: #444;
 }
 
+/* Realm Specific Colors */
+.realm-albion {
+    color: red;
+}
+
+.realm-midgard {
+    color: blue;
+}
+
+.realm-hibernia {
+    color: green;
+}
+
+.realm-albion h2, .realm-albion h3 {
+    color: red;
+}
+
+.realm-midgard h2, .realm-midgard h3 {
+    color: blue;
+}
+
+.realm-hibernia h2, .realm-hibernia h3 {
+    color: green;
+}
+
 /* Collapsible Items and Patterns */
 .collapsible {
     cursor: pointer;
