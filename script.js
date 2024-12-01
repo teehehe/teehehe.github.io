@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'recipe';
         
-        // Item name is collapsible
+        // Item name is collapsible, and should be collapsed by default
         itemDiv.innerHTML = `
             <h2 class="collapsible">${itemName}</h2>
             <div class="pattern-list" style="display:none;">
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return itemDiv;
     }
 
-    // Create a pattern card for an item, and make it collapsible
+    // Create a pattern card for an item, and make it collapsible (collapsed by default)
     function createPatternDiv(patternName, pattern) {
         const patternDiv = document.createElement('div');
         patternDiv.className = 'pattern';
