@@ -110,9 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
         patternDiv.innerHTML = `
             <h3 class="collapsible">${patternName}</h3>
             <ul style="display:none;">
-                ${Array.from(pattern.querySelectorAll('Ingredient')).map(ingredient => `
-                    <li>${ingredient.getAttribute('quantity')}x ${ingredient.getAttribute('name')}</li>
-                `).join('')}
+                ${Array.from(pattern.querySelectorAll('Ingredient')).map(ingredient => {
+                    const ingredientName = ingredient.getAttribute('name');
+                    const ingredientCategory = ingredient.getAttribute('category') || 'Unknown';  // Default 'Unknown' if category is missing
+                    return `<li>${ingredientName} (${ingredientCategory}) - ${ingredient.getAttribute('quantity')}</li>`;
+                }).join('')}
             </ul>
         `;
 
