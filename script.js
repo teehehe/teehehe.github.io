@@ -76,16 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
         contentContainer.appendChild(skillContent);
     }
 
-    // Create an individual item card
+    // Create an individual item card with collapsible patterns
     function createItemDiv(itemName, patterns) {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'recipe';
-        itemDiv.innerHTML = `<h2 class="collapsible">${itemName}</h2><div class="pattern-list">`;
+        
+        // Item name is collapsible
+        itemDiv.innerHTML = `
+            <h2 class="collapsible">${itemName}</h2>
+            <div class="pattern-list" style="display:none;">
+        `;
 
         patterns.forEach(pattern => {
             const patternName = pattern.getAttribute('name');
             const patternDiv = createPatternDiv(patternName, pattern);
-            itemDiv.appendChild(patternDiv);
+            itemDiv.querySelector('.pattern-list').appendChild(patternDiv);
         });
 
         itemDiv.querySelector('h2').addEventListener('click', () => {
@@ -97,13 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return itemDiv;
     }
 
-    // Create a pattern card for an item
+    // Create a pattern card for an item, and make it collapsible
     function createPatternDiv(patternName, pattern) {
         const patternDiv = document.createElement('div');
         patternDiv.className = 'pattern';
+
         patternDiv.innerHTML = `
             <h3 class="collapsible">${patternName}</h3>
-            <ul>
+            <ul style="display:none;">
                 ${Array.from(pattern.querySelectorAll('Ingredient')).map(ingredient => `
                     <li>${ingredient.getAttribute('quantity')}x ${ingredient.getAttribute('name')}</li>
                 `).join('')}
