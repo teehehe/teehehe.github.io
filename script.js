@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             realms.forEach(realm => {
                 const realmName = realm.getAttribute('name');
-                createRealmSection(realmName, realm); // Create section for each realm
+                createRealmSection(realmName, realm); // Create realm sections
             });
         });
 
-    // Create a section for each realm
+    // Create a realm section
     function createRealmSection(realmName, realm) {
         const realmSection = document.createElement('section');
         realmSection.id = realmName;
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contentContainer.appendChild(realmSection);
     }
 
-    // Create skill section
+    // Create a skill section
     function createSkillSection(skill, skillName, realmSection) {
         const section = document.createElement('section');
         section.id = `${realmSection.id}-${skillName}`;
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return section;
     }
 
-    // Create individual recipe card
+    // Create an individual recipe card
     function createRecipeDiv(itemName, pattern) {
         const patternName = pattern.getAttribute('name');
         const skill = pattern.getAttribute('skill');
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return recipeDiv;
     }
 
-    // Toggle visibility of skills under a realm
+    // Toggle skills visibility under a realm
     function toggleRealmSkills(realmSection) {
         const skills = realmSection.querySelectorAll('section');
         skills.forEach(skill => {
@@ -94,26 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle visibility of recipes under a skill
+    // Toggle recipes visibility under a skill
     function toggleSkillRecipes(skillSection) {
         const recipes = skillSection.querySelectorAll('.recipe');
         recipes.forEach(recipe => {
             recipe.style.display = recipe.style.display === 'none' ? 'block' : 'none';
         });
     }
-
-    // Search and Filter functionality
-    const searchBar = document.createElement('input');
-    searchBar.type = 'text';
-    searchBar.placeholder = 'Search for recipes...';
-    searchBar.style.margin = '10px';
-    searchBar.addEventListener('input', event => {
-        const query = event.target.value.toLowerCase();
-        const recipes = document.querySelectorAll('.recipe');
-        recipes.forEach(recipe => {
-            const text = recipe.textContent.toLowerCase();
-            recipe.style.display = text.includes(query) ? 'block' : 'none';
-        });
-    });
-    document.body.insertBefore(searchBar, contentContainer);
 });
