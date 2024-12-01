@@ -7,10 +7,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        Crafting Recipes
-    </header>
-    <main id="content"></main>
+    <header>Crafting Recipes</header>
+    <main>
+        <nav>
+            <input type="text" placeholder="Search for an item..." style="width: 100%; padding: 5px; margin-bottom: 10px;">
+            <a href="#dagger">Dagger</a>
+            <a href="#sword">Sword</a>
+            <a href="#mace">Mace</a>
+            <!-- Add more categories dynamically -->
+        </nav>
+        <div id="content">
+            <section id="weaponcrafting">
+                <h1>Weaponcrafting</h1>
+                <section id="dagger">
+                    <h2>Dagger</h2>
+                    <div class="recipe">
+                        <h3>Steel Dagger</h3>
+                        <p>Skill Cost: 200</p>
+                        <ul>
+                            <li>10x Steel Bars</li>
+                            <li>5x Wooden Boards</li>
+                        </ul>
+                        <button class="buy-all">Buy All</button>
+                        <button class="buy-missing">Buy Missing</button>
+                    </div>
+                </section>
+                <!-- Add more dynamically -->
+            </section>
+        </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
