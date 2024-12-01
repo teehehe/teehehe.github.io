@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const xmlFile = 'atlas_crafting_recipes.xml';
     const contentContainer = document.getElementById('content');
     const realmList = document.getElementById('realmList');
-    const skillList = document.getElementById('skillList');
     const searchBox = document.getElementById('searchBox');
     const excludedSkills = ['Siegecraft', 'Jewelcraft', 'Gemcutting', 'Herbcraft', 'Herbcrafting'];
 
@@ -26,32 +25,38 @@ document.addEventListener('DOMContentLoaded', () => {
     function createRealmInSidebar(realmName, realm) {
         const realmItem = document.createElement('li');
         realmItem.textContent = realmName;
-        realmItem.style.fontSize = '18px';
-        realmItem.style.fontWeight = 'bold';
-        realmItem.addEventListener('click', () => showSkillsInSidebar(realmName, realm));
+        realmItem.addEventListener('click', () => toggleRealmCollapse(realmItem, realm)); // Toggle collapse
         realmList.appendChild(realmItem);
-    }
 
-    // Show skills for the selected realm
-    function showSkillsInSidebar(realmName, realm) {
-        selectedRealm = realm;
-        skillList.style.display = 'block'; // Show the skills list
-        skillList.innerHTML = ''; // Clear previous skills list
-
+        const skillsList = document.createElement('ul');
         const skills = realm.querySelectorAll('Skill');
         skills.forEach(skill => {
             const skillName = skill.getAttribute('name');
             if (!excludedSkills.includes(skillName.toLowerCase())) {
                 const skillItem = document.createElement('li');
                 skillItem.textContent = skillName;
-                skillItem.style.fontSize = '16px';
                 skillItem.addEventListener('click', (event) => {
-                    event.stopPropagation();
+                    event.stopPropagation(); // Prevent realm collapse toggle
                     showSkillRecipes(realmName, skillName, skill);
                 });
-                skillList.appendChild(skillItem);
+                skillsList.appendChild(skillItem);
             }
         });
+
+        realmItem.appendChild(skillsList);
+    }
+
+    // Toggle collapse/expand for a realm
+    function toggleRealmCollapse(realmItem, realm) {
+        const skillsList = realmItem.querySelector('ul');
+        const isCollapsed = realmItem.classList.contains('collapsed');
+        if (isCollapsed) {
+            skillsList.style.display = 'block';
+            realmItem.classList.remove('collapsed');
+        } else {
+            skillsList.style.display = 'none';
+            realmItem.classList.add('collapsed');
+        }
     }
 
     // Show recipes for the selected skill
@@ -95,16 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function filterList() {
         const searchTerm = searchBox.value.toLowerCase();
         const realmItems = realmList.getElementsByTagName('li');
-        const skillItems = skillList.getElementsByTagName('li');
         
         // Filter realms
         Array.from(realmItems).forEach(item => {
-            const text = item.textContent.toLowerCase();
-            item.style.display = text.includes(searchTerm) ? 'block' : 'none';
-        });
-
-        // Filter skills
-        Array.from(skillItems).forEach(item => {
             const text = item.textContent.toLowerCase();
             item.style.display = text.includes(searchTerm) ? 'block' : 'none';
         });
