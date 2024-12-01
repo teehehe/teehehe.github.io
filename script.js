@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const skillContent = document.createElement('section');
         skillContent.innerHTML = `<h1 class="realm-${realmName.toLowerCase()}">${realmName} - ${skillName}</h1>`; // Color based on realm
 
-        const items = skill.querySelectorAll('Item');  // Correctly access Items
+        const items = skill.querySelectorAll('Item');
         items.forEach(item => {
             const itemName = item.getAttribute('name');
             const patterns = item.querySelectorAll('Pattern');
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return patternDiv;
     }
 
-    // Filter the sidebar list and display all matching results in the center page
+    // Handle search input
     searchBox.addEventListener('input', () => {
         const searchTerm = searchBox.value.toLowerCase();
         contentContainer.innerHTML = ''; // Clear existing content
